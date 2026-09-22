@@ -89,6 +89,8 @@ An expanding-window walk-forward validation strategy was used with three 30-day 
 
 The same validation periods were used for both SARIMA and LightGBM.
 
+The structural-break fold produced the largest forecasting errors for both models, showing the effect of regime change on forecasting performance.
+
 ## Model Performance
 
 | Model | MAE | RMSE | WAPE |
@@ -109,6 +111,19 @@ The average empirical coverage was approximately **65.56%**, compared with the n
 
 Coverage decreased substantially during the structural break, indicating that abrupt regime changes remain difficult to capture using historical patterns alone.
 
+## Model Family Considerations
+
+The program covers several forecasting model families and tools, including:
+
+- **statsmodels:** classical statistical forecasting and diagnostics, including ARIMA/SARIMA and exponential smoothing methods.
+- **Prophet:** interpretable trend and seasonality modeling with built-in uncertainty intervals.
+- **sktime:** a unified forecasting framework that supports classical, machine-learning, and probabilistic forecasting workflows.
+- **LightGBM:** gradient-boosted tree forecasting using engineered lag, rolling, and calendar features.
+
+In this submission, **SARIMA** and **LightGBM** were implemented and evaluated directly.
+
+**Prophet**, **sktime**, and additional classical exponential-smoothing models are relevant alternatives for broader model-family comparison and probabilistic forecasting evaluation, but were not implemented in the submitted notebook.
+
 ## Final Model
 
 SARIMA was selected as the final model based on:
@@ -120,9 +135,27 @@ SARIMA was selected as the final model based on:
 - Lower feature engineering requirements
 - Relatively low computational complexity
 
+Although SARIMA performed better overall, the backtesting results showed that structural changes can significantly affect both point forecasts and uncertainty estimates.
+
 ## Final Forecast
 
 The selected SARIMA model was retrained on the complete historical dataset and used to generate a **30-day workforce demand forecast** with **95% prediction intervals**.
+
+The forecast preserves the strong weekly seasonal pattern observed in the historical data.
+
+## Limitations and Future Work
+
+The main limitation of this project is the structural break observed in April 2025, which reduced forecasting accuracy and interval calibration.
+
+Future improvements could include:
+
+- Comparing expanding-window and rolling-window backtesting
+- Adding a seasonal-naive baseline
+- Evaluating exponential smoothing models such as Holt-Winters / ETS
+- Comparing Prophet and sktime forecasting approaches
+- Evaluating quantile forecasts using pinball loss
+- Exploring conformal prediction for better-calibrated uncertainty intervals
+- Refactoring repeated backtesting logic into shared reusable functions
 
 ## Technologies
 
@@ -149,6 +182,8 @@ The dataset is loaded directly from the course repository.
 ## Program
 
 Developed as part of the **Time Series Analysis & Forecasting** program at [SDAIA Academy](https://github.com/SDAIAAcademy).
+
+**Cohort: September 2026**
 
 ## Author
 
